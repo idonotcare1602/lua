@@ -327,13 +327,15 @@ tt.Font = Enum.Font.GothamBold
 
 local hide = Instance.new("TextButton")
 hide.Parent = hub
-hide.Size = UDim2.new(0,34,0,34)
-hide.Position = UDim2.new(1,-40,0,8)
+hide.Size = UDim2.new(0,36,0,36)
+hide.Position = UDim2.new(1,-42,0,8)
 hide.Text = "-"
 hide.Font = Enum.Font.GothamBlack
 hide.TextSize = 22
-hide.TextColor3 = Color3.fromRGB(255,255,255)
-hide.BackgroundColor3 = Color3.fromRGB(200,0,255)
+hide.TextColor3 = Color3.new(1,1,1)
+
+-- màu xanh neon nổi hơn
+hide.BackgroundColor3 = Color3.fromRGB(0,255,180)
 
 local hideCorner = Instance.new("UICorner")
 hideCorner.Parent = hide
@@ -341,9 +343,8 @@ hideCorner.CornerRadius = UDim.new(0,8)
 
 local hideStroke = Instance.new("UIStroke")
 hideStroke.Parent = hide
-hideStroke.Color = Color3.fromRGB(255,120,255)
+hideStroke.Color = Color3.fromRGB(120,255,220)
 hideStroke.Thickness = 2
-
 -------------------------------------------------
 -- ICON
 -------------------------------------------------
@@ -355,7 +356,7 @@ icon.Position = UDim2.new(0,20,0.5,-30)
 icon.Text = "K"
 icon.Font = Enum.Font.GothamBlack
 icon.TextSize = 32
-icon.BackgroundColor3 = Color3.fromRGB(200,0,255)
+icon.BackgroundColor3 = Color3.fromRGB(0,255,200)
 icon.Visible = false
 Instance.new("UICorner",icon).CornerRadius = UDim.new(1,0)
 
@@ -393,6 +394,11 @@ task.spawn(function()
 		}):Play()
 
 		task.wait(0.8)
+local iconGlow = Instance.new("UIStroke")
+iconGlow.Parent = icon
+iconGlow.Color = Color3.fromRGB(0,255,200)
+iconGlow.Thickness = 6
+iconGlow.Transparency = 0.5
 
 	end
 
