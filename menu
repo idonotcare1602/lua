@@ -101,46 +101,65 @@ title.Text = "KEISHA HUB"
 title.Font = Enum.Font.GothamBold
 title.TextSize = 24
 title.TextColor3 = Color3.fromRGB(220,150,255)
-
 -------------------------------------------------
--- DRAG HUB
+-- DRAG HUB (PC + MOBILE)
 -------------------------------------------------
 
 local dragging = false
+local dragInput
 local dragStart
 local startPos
 
+local function update(input)
+
+	local delta = input.Position - dragStart
+
+	hub.Position = UDim2.new(
+		startPos.X.Scale,
+		startPos.X.Offset + delta.X,
+		startPos.Y.Scale,
+		startPos.Y.Offset + delta.Y
+	)
+
+end
+
 hub.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1 
+	or input.UserInputType == Enum.UserInputType.Touch then
+
 		dragging = true
 		dragStart = input.Position
 		startPos = hub.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+
 	end
+
 end)
 
-hub.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = false
+hub.InputChanged:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.MouseMovement
+	or input.UserInputType == Enum.UserInputType.Touch then
+
+		dragInput = input
+
 	end
+
 end)
 
 UIS.InputChanged:Connect(function(input)
 
-	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-
-		local delta = input.Position - dragStart
-
-		hub.Position = UDim2.new(
-			startPos.X.Scale,
-			startPos.X.Offset + delta.X,
-			startPos.Y.Scale,
-			startPos.Y.Offset + delta.Y
-		)
-
+	if input == dragInput and dragging then
+		update(input)
 	end
 
 end)
-
 -------------------------------------------------
 -- NOTIFICATION
 -------------------------------------------------
@@ -315,42 +334,62 @@ icon.MouseButton1Click:Connect(function()
 	hub.Visible = true
 	icon.Visible = false
 end)
-
 -------------------------------------------------
--- DRAG ICON
+-- DRAG ICON (PC + MOBILE)
 -------------------------------------------------
 
-local iconDrag = false
-local iconStart
-local iconPos
+local iconDragging = false
+local iconDragInput
+local iconDragStart
+local iconStartPos
+
+local function updateIcon(input)
+
+	local delta = input.Position - iconDragStart
+
+	icon.Position = UDim2.new(
+		iconStartPos.X.Scale,
+		iconStartPos.X.Offset + delta.X,
+		iconStartPos.Y.Scale,
+		iconStartPos.Y.Offset + delta.Y
+	)
+
+end
 
 icon.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		iconDrag = true
-		iconStart = input.Position
-		iconPos = icon.Position
+
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+	or input.UserInputType == Enum.UserInputType.Touch then
+
+		iconDragging = true
+		iconDragStart = input.Position
+		iconStartPos = icon.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				iconDragging = false
+			end
+		end)
+
 	end
+
 end)
 
-icon.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		iconDrag = false
+icon.InputChanged:Connect(function(input)
+
+	if input.UserInputType == Enum.UserInputType.MouseMovement
+	or input.UserInputType == Enum.UserInputType.Touch then
+
+		iconDragInput = input
+
 	end
+
 end)
 
 UIS.InputChanged:Connect(function(input)
 
-	if iconDrag and input.UserInputType == Enum.UserInputType.MouseMovement then
-
-		local delta = input.Position - iconStart
-
-		icon.Position = UDim2.new(
-			iconPos.X.Scale,
-			iconPos.X.Offset + delta.X,
-			iconPos.Y.Scale,
-			iconPos.Y.Offset + delta.Y
-		)
-
+	if input == iconDragInput and iconDragging then
+		updateIcon(input)
 	end
 
 end)
