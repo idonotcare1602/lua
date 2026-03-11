@@ -1,0 +1,203 @@
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local isMobile = UserInputService.TouchEnabled and not UserInputService.MouseEnabled
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "KeishaHub"
+screenGui.ResetOnSpawn = false
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+pcall(function()
+	screenGui.Parent = PlayerGui
+end)
+
+local baseSize = isMobile and UDim2.new(0,300,0,370) or UDim2.new(0,340,0,400)
+local basePos = UDim2.new(0.5,-170,0.5,-200)
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0,0,0,0)
+mainFrame.Position = basePos
+mainFrame.BackgroundColor3 = Color3.fromRGB(10,5,20)
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+
+local corner = Instance.new("UICorner",mainFrame)
+corner.CornerRadius = UDim.new(0,18)
+
+local stroke = Instance.new("UIStroke",mainFrame)
+stroke.Color = Color3.fromRGB(255,0,255)
+stroke.Transparency = 0.2
+stroke.Thickness = 1.5
+
+local gradient = Instance.new("UIGradient",mainFrame)
+gradient.Color = ColorSequence.new{
+	ColorSequenceKeypoint.new(0,Color3.fromRGB(60,0,120)),
+	ColorSequenceKeypoint.new(0.5,Color3.fromRGB(35,0,90)),
+	ColorSequenceKeypoint.new(1,Color3.fromRGB(90,0,150))
+}
+gradient.Rotation = 135
+
+local glow = Instance.new("Frame")
+glow.Size = UDim2.new(1,0,0,3)
+glow.BackgroundColor3 = Color3.fromRGB(255,0,255)
+glow.BorderSizePixel = 0
+glow.Parent = mainFrame
+
+local topBar = Instance.new("Frame")
+topBar.Size = UDim2.new(1,0,0,55)
+topBar.BackgroundTransparency = 1
+topBar.Parent = mainFrame
+
+local logo = Instance.new("Frame")
+logo.Size = UDim2.new(0,36,0,36)
+logo.Position = UDim2.new(0,14,0.5,-18)
+logo.BackgroundColor3 = Color3.fromRGB(200,60,255)
+logo.BorderSizePixel = 0
+logo.Parent = topBar
+
+Instance.new("UICorner",logo).CornerRadius = UDim.new(0,8)
+
+local logoText = Instance.new("TextLabel")
+logoText.Size = UDim2.new(1,0,1,0)
+logoText.BackgroundTransparency = 1
+logoText.Text = "K"
+logoText.TextScaled = true
+logoText.Font = Enum.Font.GothamBold
+logoText.TextColor3 = Color3.new(1,1,1)
+logoText.Parent = logo
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0,160,0,22)
+title.Position = UDim2.new(0,58,0,8)
+title.BackgroundTransparency = 1
+title.Text = "KEISHA HUB"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 15
+title.TextColor3 = Color3.fromRGB(230,150,255)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = topBar
+
+local subtitle = Instance.new("TextLabel")
+subtitle.Size = UDim2.new(0,170,0,16)
+subtitle.Position = UDim2.new(0,58,0,30)
+subtitle.BackgroundTransparency = 1
+subtitle.Text = "Trade Controller"
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextSize = 11
+subtitle.TextColor3 = Color3.fromRGB(150,100,200)
+subtitle.TextXAlignment = Enum.TextXAlignment.Left
+subtitle.Parent = topBar
+
+local minimize = Instance.new("TextButton")
+minimize.Size = UDim2.new(0,28,0,28)
+minimize.Position = UDim2.new(1,-42,0.5,-14)
+minimize.BackgroundColor3 = Color3.fromRGB(70,20,100)
+minimize.Text = "−"
+minimize.Font = Enum.Font.GothamBold
+minimize.TextSize = 16
+minimize.TextColor3 = Color3.fromRGB(220,150,255)
+minimize.Parent = topBar
+Instance.new("UICorner",minimize).CornerRadius = UDim.new(0,7)
+
+local content = Instance.new("Frame")
+content.Size = UDim2.new(1,0,1,-60)
+content.Position = UDim2.new(0,0,0,60)
+content.BackgroundTransparency = 1
+content.Parent = mainFrame
+
+local layout = Instance.new("UIListLayout",content)
+layout.Padding = UDim.new(0,10)
+layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+local function toggleButton(name,icon)
+	local container = Instance.new("Frame")
+	container.Size = UDim2.new(1,-20,0,55)
+	container.BackgroundColor3 = Color3.fromRGB(30,10,50)
+	container.Parent = content
+
+	Instance.new("UICorner",container).CornerRadius = UDim.new(0,12)
+
+	local iconLabel = Instance.new("TextLabel")
+	iconLabel.Size = UDim2.new(0,32,0,32)
+	iconLabel.Position = UDim2.new(0,10,0.5,-16)
+	iconLabel.Text = icon
+	iconLabel.TextScaled = true
+	iconLabel.Font = Enum.Font.GothamBold
+	iconLabel.BackgroundColor3 = Color3.fromRGB(120,40,200)
+	iconLabel.TextColor3 = Color3.new(1,1,1)
+	iconLabel.Parent = container
+	Instance.new("UICorner",iconLabel)
+
+	local nameLabel = Instance.new("TextLabel")
+	nameLabel.Size = UDim2.new(1,-110,0,20)
+	nameLabel.Position = UDim2.new(0,50,0.5,-10)
+	nameLabel.BackgroundTransparency = 1
+	nameLabel.Text = name
+	nameLabel.Font = Enum.Font.GothamBold
+	nameLabel.TextColor3 = Color3.fromRGB(230,200,255)
+	nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+	nameLabel.Parent = container
+
+	local status = Instance.new("TextLabel")
+	status.Size = UDim2.new(0,80,0,20)
+	status.Position = UDim2.new(1,-90,0.5,-10)
+	status.BackgroundTransparency = 1
+	status.Text = "Inactive"
+	status.TextColor3 = Color3.fromRGB(150,120,200)
+	status.Font = Enum.Font.Gotham
+	status.Parent = container
+
+	local button = Instance.new("TextButton")
+	button.Size = UDim2.new(1,0,1,0)
+	button.BackgroundTransparency = 1
+	button.Text = ""
+	button.Parent = container
+
+	local on=false
+	button.MouseButton1Click:Connect(function()
+		on=not on
+		status.Text= on and "Active" or "Inactive"
+	end)
+end
+
+toggleButton("Freeze Trade","❄")
+toggleButton("Auto Accept","✓")
+toggleButton("Cancel Trade","✕")
+
+local footer = Instance.new("Frame")
+footer.Size = UDim2.new(1,0,0,50)
+footer.BackgroundTransparency = 1
+footer.Parent = content
+
+local credit = Instance.new("TextLabel")
+credit.Size = UDim2.new(1,0,0,16)
+credit.Position = UDim2.new(0,0,0,4)
+credit.BackgroundTransparency = 1
+credit.Text = "Made By Keisha"
+credit.TextColor3 = Color3.fromRGB(160,100,220)
+credit.Font = Enum.Font.GothamBold
+credit.TextXAlignment = Enum.TextXAlignment.Center
+credit.Parent = footer
+
+local social = Instance.new("TextLabel")
+social.Size = UDim2.new(1,0,0,14)
+social.Position = UDim2.new(0,0,0,22)
+social.BackgroundTransparency = 1
+social.Text = "TT: keishastealabrainrots"
+social.TextColor3 = Color3.fromRGB(120,80,180)
+social.Font = Enum.Font.Gotham
+social.TextXAlignment = Enum.TextXAlignment.Center
+social.Parent = footer
+
+TweenService:Create(mainFrame,TweenInfo.new(0.5,Enum.EasingStyle.Back),{Size=baseSize}):Play()
+
+RunService.Heartbeat:Connect(function()
+	local t=tick()
+	local alpha=(math.sin(t*1.5)+1)/2
+	stroke.Transparency=0.2+alpha*0.4
+end)
