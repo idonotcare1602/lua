@@ -102,6 +102,29 @@ title.Font = Enum.Font.GothamBold
 title.TextSize = 24
 title.TextColor3 = Color3.fromRGB(220,150,255)
 -------------------------------------------------
+-- HUB GLOW ANIMATION
+-------------------------------------------------
+
+task.spawn(function()
+
+	while true do
+
+		TweenService:Create(stroke,TweenInfo.new(1),{
+			Transparency = 0.5
+		}):Play()
+
+		task.wait(1)
+
+		TweenService:Create(stroke,TweenInfo.new(1),{
+			Transparency = 0
+		}):Play()
+
+		task.wait(1)
+
+	end
+
+end)
+-------------------------------------------------
 -- DRAG HUB (PC + MOBILE)
 -------------------------------------------------
 
@@ -283,8 +306,9 @@ credit.Position = UDim2.new(0,0,1,-50)
 credit.Size = UDim2.new(1,0,0,20)
 credit.Text = "Made By Keisha"
 credit.Font = Enum.Font.GothamBold
-credit.TextSize = 14
-credit.TextColor3 = Color3.fromRGB(200,120,255)
+credit.TextSize = 18
+credit.TextColor3 = Color3.fromRGB(255,170,255)
+credit.Font = Enum.Font.GothamBlack
 
 local tt = Instance.new("TextLabel")
 tt.Parent = hub
@@ -293,8 +317,9 @@ tt.Position = UDim2.new(0,0,1,-30)
 tt.Size = UDim2.new(1,0,0,20)
 tt.Text = "TT: keishastealabrainrots"
 tt.Font = Enum.Font.Gotham
-tt.TextSize = 13
-tt.TextColor3 = Color3.fromRGB(170,120,230)
+tt.TextSize = 16
+tt.TextColor3 = Color3.fromRGB(230,170,255)
+tt.Font = Enum.Font.GothamBold
 
 -------------------------------------------------
 -- HIDE BUTTON
@@ -302,13 +327,22 @@ tt.TextColor3 = Color3.fromRGB(170,120,230)
 
 local hide = Instance.new("TextButton")
 hide.Parent = hub
-hide.Size = UDim2.new(0,30,0,30)
-hide.Position = UDim2.new(1,-35,0,8)
+hide.Size = UDim2.new(0,34,0,34)
+hide.Position = UDim2.new(1,-40,0,8)
 hide.Text = "-"
-hide.Font = Enum.Font.GothamBold
-hide.TextSize = 18
-hide.BackgroundColor3 = Color3.fromRGB(70,20,100)
-Instance.new("UICorner",hide)
+hide.Font = Enum.Font.GothamBlack
+hide.TextSize = 22
+hide.TextColor3 = Color3.fromRGB(255,255,255)
+hide.BackgroundColor3 = Color3.fromRGB(200,0,255)
+
+local hideCorner = Instance.new("UICorner")
+hideCorner.Parent = hide
+hideCorner.CornerRadius = UDim.new(0,8)
+
+local hideStroke = Instance.new("UIStroke")
+hideStroke.Parent = hide
+hideStroke.Color = Color3.fromRGB(255,120,255)
+hideStroke.Thickness = 2
 
 -------------------------------------------------
 -- ICON
@@ -333,6 +367,35 @@ end)
 icon.MouseButton1Click:Connect(function()
 	hub.Visible = true
 	icon.Visible = false
+end)
+-------------------------------------------------
+-- ICON GLOW ANIMATION
+-------------------------------------------------
+
+local iconGlow = Instance.new("UIStroke")
+iconGlow.Parent = icon
+iconGlow.Color = Color3.fromRGB(255,80,255)
+iconGlow.Thickness = 3
+iconGlow.Transparency = 0.2
+
+task.spawn(function()
+
+	while true do
+
+		TweenService:Create(iconGlow,TweenInfo.new(0.8),{
+			Transparency = 0.6
+		}):Play()
+
+		task.wait(0.8)
+
+		TweenService:Create(iconGlow,TweenInfo.new(0.8),{
+			Transparency = 0.2
+		}):Play()
+
+		task.wait(0.8)
+
+	end
+
 end)
 -------------------------------------------------
 -- DRAG ICON (PC + MOBILE)
